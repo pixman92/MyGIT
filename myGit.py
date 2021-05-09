@@ -177,14 +177,14 @@ def branchMe(name):
         # print 'sourcePathMe', sourcePathMe
 
         path = sourcePathMe         #this is IMPORTANT
-        if not os.path.exists(transToBranchMe+'/Saved'):
-            os.makedirs(transToBranchMe+'/Saved')       
+        if not os.path.exists(transToBranchMe+'Saved'):
+            os.makedirs(transToBranchMe+'Saved')       
 
         else:
 
             # use: destPathURL
             # savedStrToReplace = sourcePathMe+ '/Saved/'+ name + '/'
-            savedStrToReplace = transToBranchMe+ '/Saved/'+ name
+            savedStrToReplace = transToBranchMe+ 'Saved/'+ name
 
 
             # =============================
@@ -497,7 +497,7 @@ for i, argMe in enumerate(sys.argv):
             branch=raw_input('Run? (yes/no) ')
             if(branch == 'yes'):
                 # branchMe(sys.argv[i+1]) 
-                branchMe(sys.argv[i+1])  
+                branchMe(str(sys.argv[i+1]))  
             
 
     # =============================
