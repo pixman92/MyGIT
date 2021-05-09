@@ -386,8 +386,19 @@ def revert2(branchName):
     for i in range(0,len(dir_name)):
         # for loop -> combing file URL & it's data
         print '====='
-        print dir_name[i]
-        print newFileData[i]
+        try:
+            dir_name[i]
+        except:
+            print "no directories"
+        else:
+            print dir_name[i]
+
+        try:
+            newFileData[i]
+        except:
+            print "no files"
+        else:
+            print newFileData[i]
         print '====='
     # =============================
     # this may be dangerous
