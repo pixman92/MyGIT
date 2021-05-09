@@ -105,7 +105,7 @@ def saveDestURL(strSavedToDestURL):
 
 def pullDestURL():
     # pulls up the destPathURL string
-    # pullSourceURL()
+    pullSourceURL()
 
     # file_name = os.getcwd()
     # import pdb; pdb.set_trace()
@@ -462,10 +462,10 @@ for i, argMe in enumerate(sys.argv):
     if(argMe == '-changeSource'):
         # cleanSourceURL()
         if(i+1<len(sys.argv)):
-            meChanged = sys.argv[i+1].replace('\\', '/')
-            saveSourceURL(meChanged)
+            # meChanged = sys.argv[i+1].replace('\\', '/')
+            saveSourceURL(sys.argv[i+1])
             pullSourceURL()
-            pullDestURL()
+            saveDestURL('')
         else:
             print "\nNeeds another argument "
 
@@ -533,8 +533,13 @@ for i, argMe in enumerate(sys.argv):
     if(argMe == '-pullBranches'):
         pullSourceURL()
         pullDestURL()
-        branches = os.listdir(destPathURL)
-        print branches
+        try:
+            branches
+        except:
+            print "NO Branches, yet!"
+        else:
+            branches = os.listdir(destPathURL)        
+            print branches
 
 
     # =============================
