@@ -273,14 +273,20 @@ def branchMe(name):
 
             # import pdb; pdb.set_trace()
             # for loop for making Directory(s)
-            for pathCreate in dirsToMake:
-                # tmp = os.path.join(pathCreate)
-                # os.mkdir(tmp)
-                if not os.path.exists(pathCreate) or dirsToMake is not None:
-                    os.makedirs(pathCreate)
-                    print pathCreate, "\ncreated!!!"
-                else:
-                    print "Already exists!!!"
+            try:
+                dirsToMake
+            except:
+                print "no Directories to branch out!"
+            else:
+                for pathCreate in dirsToMake:
+                    # tmp = os.path.join(pathCreate)
+                    # os.mkdir(tmp)
+                    if not os.path.exists(pathCreate) or dirsToMake is not None:
+                        os.makedirs(pathCreate)
+                        print pathCreate, "\ncreated!!!"
+                    else:
+                        print "Already exists!!!"
+                
 
             # ==============Still in use===============
             # for loop for making Files!
