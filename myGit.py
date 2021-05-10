@@ -16,34 +16,27 @@ import datetime
 def saveSourceURL(urlMe):
     # save path to sourceFolder
 
+
     if urlMe[len(urlMe)-1] == '/':
         print "Uh oh, Source Path should not end with \'\\'!!"
     else:
-        if os.path.isdir(urlMe):
-            file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-
-            # universal Path maker
-            tmp = file_name
-            file_name = tmp.replace('\\', '/')
-
-            # make the URL universal
-            tmp = urlMe
-            urlMe = tmp.replace('\\', '/')
-
-            with open(file_name, 'w') as data:
-                data.write(urlMe)
-                data.close()
+        try:
+            os.path.exists(urlMe)
+        except:
+            print "Source not made!"
         else:
-            # if it's a new Directory -> make it, else if non value dir
-            print "\n====\nTry again, needs to be Valid Directory\n===="
-            createDir = raw_input(
-                "\nWould you like to create this \"" + urlMe + "\" as a New Path? ")
-            # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-            if(createDir == "yes"):
-                os.mkdir(urlMe)
+
+            try:
+                os.path.isdir(urlMe)
+            except:
+                print "Source Path entered! Not a URL"
+            else:
+                print "Creating the URL!"
+                os.makedirs(urlMe)
                 # if os.path.isdir(urlMe):
-                #     print "made dir, is Valid"
-                file_name = os.path.join(urlMe, 'savedURL.txt')
+                file_name = os.path.join(os.getcwd(), 'savedURL.txt')
+
+                # universal Path maker
                 tmp = file_name
                 file_name = tmp.replace('\\', '/')
 
@@ -56,27 +49,59 @@ def saveSourceURL(urlMe):
                     data.close()
 
 
+        # else:
+        #     # if it's a new Directory -> make it, else if non value dir
+        #     print "\n====\nTry again, needs to be Valid Directory\n===="
+        #     createDir = raw_input(
+        #         "\nWould you like to create this \"" + urlMe + "\" as a New Path? ")
+        #     # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
+        #     if(createDir == "yes"):
+        #         os.mkdir(urlMe)
+        #         # if os.path.isdir(urlMe):
+        #         #     print "made dir, is Valid"
+        #         file_name = os.path.join(urlMe, 'savedURL.txt')
+        #         tmp = file_name
+        #         file_name = tmp.replace('\\', '/')
+
+        #         # make the URL universal
+        #         tmp = urlMe
+        #         urlMe = tmp.replace('\\', '/')
+
+        #         with open(file_name, 'w') as data:
+        #             data.write(urlMe)
+        #             data.close()
+
+
+
+
+
 def pullSourceURL():
     # pull out the path, saved in text document
     # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
     try:
         file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-        global theSource
-        theSource = file_name
-        with open(file_name, 'r') as data:
-            returnMe = data.readlines()
-            global sourcePathMe
-            sourcePathMe = returnMe[0]
-
-            print "sourcePathMe"
-
-            data.close()
+      
             # return returnMe
     except:
         print "error"
         print "you need to set Source Path"
         print file_name
         print theSource
+    global theSource
+    theSource = file_name
+    with open(file_name, 'r') as data:
+        returnMe = data.readlines()
+        global sourcePathMe
+
+
+        sourcePathMe = returnMe[0]
+
+        tmp = sourcePathMe
+        sourcePathMe = tmp.replace('\\', '/')
+
+        print "sourcePathMe: ", sourcePathMe
+
+        data.close()
 
 
 def cleanSourceURL():
@@ -95,6 +120,8 @@ def saveDestURL(strSavedToDestURL):
     if(strSavedToDestURL == ""):
         print "It seems you didn't specify a PATH Directory for your source, it will now point to the root Directory, \'Saved\'"
 
+    import pdb; pdb.set_trace()   #debugger
+
     # pullSourceURL()
 
     # os.getcwd()
@@ -112,6 +139,8 @@ def saveDestURL(strSavedToDestURL):
     saved = os.path.join(meChangedDest, 'Saved/')
     # add filename
     file_name = os.path.join(meChangedDest, 'savedDestURL.txt')
+
+    import pdb; pdb.set_trace()   #debugger
 
     # make file_name global, to be used in pullDestURL()
     # global destPathSet
@@ -135,10 +164,9 @@ def pullDestURL():
     # file_name = os.path.join(os.getcwd(), 'savedDestURL.txt')
 
     try:
-        sourcePathMe
+        os.path.exits(sourcePathMe)
     except:
         print "sourcePathMe undefined! Try reseting with <-changeSource> param"
-    else:
 
         # =============================
         # make a LEVEL UP path
@@ -385,6 +413,9 @@ def revert2(branchName):
     pullSourceURL()
     pullDestURL()
 
+    if os.path.exists(sourcePathMe) == False:
+        print 'ran'
+        os.makedirs(sourcePathMe+'/')
     # dumping into <sourcePathMe>
     # pulling from <destPathURL>
 
@@ -510,21 +541,38 @@ def revert2(branchName):
         print 'dirs\n', dirsToMake
 
         # (loop) for loop for making Directory(s)
-        for pathCreate in dirsToMake:
-            # tmp = os.path.join(pathCreate)
-            # os.mkdir(tmp)
-            if not os.path.exists(pathCreate):
-                os.makedirs(pathCreate)
-                print pathCreate, "\ncreated!!!"
-            else:
-                print "Already exists!!!"
+        try:
+            dirsToMake
+        except:
+            print "No directories to Revert from."
+        else:
+            for pathCreate in dirsToMake:
+                # tmp = os.path.join(pathCreate)
+                # os.mkdir(tmp)
+                if not os.path.exists(pathCreate):
+                    os.makedirs(pathCreate)
+                    print pathCreate, "\ncreated!!!"
+                else:
+                    print "Already exists!!!"
+
+
+        # =============================
+        # os.makedirs(sourcePathMe)
+        if os.path.exists(sourcePathMe) == False:
+            print 'ran'
+            os.makedirs(sourcePathMe)
 
         # ==============Creating Files===============
         # for loop for making Files!
-        # import pdb; pdb.set_trace()
         ii = 0
         for item in newFilePath:
+            print 'item new? ', item
             with open(item, 'w') as savedDest:
+                print "savedDest", savedDest
+                
+                # import pdb; pdb.set_trace()
+                
+                
                 # print '\n====\n', newFileData[ii]
                 savedDest.write((' '.join(newFileData[ii])))
                 print "written:\n", ' '.join(newFileData[ii])
@@ -597,13 +645,20 @@ for i, argMe in enumerate(sys.argv):
             if os.path.isdir(sourcePathMe):
                 print "Source Path is good"
                 print sourcePathMe
-
                 try:
                     sys.argv[i+1]
                 except:
                     print "Branch not found!\nTry creating one! \"-branch <name>\""
                 else:
                     revert2(sys.argv[i+1])
+            else:
+                os.makedirs(sourcePathMe)
+                print "Source Path (Re)Created!"
+
+                revert2(sys.argv[i+1])
+
+                
+
 
             # os.path.abspath(sourcePathMe)
             # os.chdir('..')
@@ -623,12 +678,14 @@ for i, argMe in enumerate(sys.argv):
             pullSourceURL()
             pullDestURL()
             try:
-                branches
+                os.listdir(destPathURL)
             except:
                 print "NO Branches, yet!"
             else:
-                branches = os.listdir(destPathURL)
-                print branches
+                # branches = os.listdir(destPathURL)
+                print "\nThese are your Saved Branchess"
+                print os.listdir(destPathURL)
+                print "----"
 
         # =============================
         if(argMe == '-list'):
