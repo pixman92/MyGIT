@@ -162,7 +162,7 @@ def saveDestURL(strSavedToDestURL):
     # os.path.abspath(sourcePathMe)
     # os.chdir('..')
     try:
-        sourcePathMe
+        os.path.exists(sourcePathMe)
     except:
         print "Source Path, undefined! Take care of this first!"
     else:
