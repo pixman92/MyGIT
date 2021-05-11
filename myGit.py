@@ -119,10 +119,10 @@ def pullSourceURL():
         # print theSource
         file_name = os.path.join(os.getcwd(), 'savedURL.txt')
         global theSource
+        global sourcePathMe
         theSource = file_name
         with open(file_name, 'r') as data:
             returnMe = data.readlines()
-            global sourcePathMe
 
 
             sourcePathMe = returnMe[0]
