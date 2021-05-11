@@ -109,8 +109,9 @@ def pullSourceURL():
 
     #     data.close()
     # if file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-    if os.path.exists(os.path.join(os.getcwd(), 'savedURL.txt')):
-        print "Already Exists!"
+    if os.path.exists(os.path.join(os.getcwd(), 'savedURL.txt'))==False:
+        # print "Already Exists!"
+        print "You need to specify a Source Path!"
     else:
         # print "error"
         # print "you need to set Source Path"
