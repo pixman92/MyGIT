@@ -116,6 +116,7 @@ def pullSourceURL():
         # print "you need to set Source Path"
         # print file_name
         # print theSource
+        file_name = os.path.join(os.getcwd(), 'savedURL.txt')
         global theSource
         theSource = file_name
         with open(file_name, 'r') as data:
