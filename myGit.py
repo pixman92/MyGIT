@@ -190,16 +190,16 @@ def pullDestURL():
     # pullSourceURL()
 
     # file_name = os.path.join(os.getcwd(), '/savedGITAlternative/savedDestURL.txt')
-    file_name = os.sep.join([os.getcwd(), 'savedGITAlternative/savedDestURL.txt'])
+    file_name_dest = os.sep.join([os.getcwd(), 'savedGITAlternative/savedDestURL.txt'])
 
 
 
-    if(os.path.exists(file_name)==False):
+    if(os.path.exists(file_name_dest)==False):
         print "Blank Destination File Error 1 - Create a Dest File"
     else:
             # global theSource
-            # theSource = file_name
-        with open(file_name, 'r') as data:
+            # theSource = file_name_dest
+        with open(file_name_dest, 'r') as data:
             returnMe = data.readlines()
 
             try:
@@ -233,7 +233,8 @@ def saveAMilestone(message):
 
 
 # ==========================
-# def run():
+def run():
+    revert2('hello')
     # tmp = os.path.dirname(file)
     # dir_path = os.path.dirname(os.path.realpath(file))    # shutil.rmtree(sourcePathMe+'/')
     # return dir_path
@@ -268,12 +269,13 @@ def branchMe(name):
 
         # making source File Paths! working!
         for f in f_names:
-            tmp1 = os.path.join(pullSourceURL(), f)
+            tmp1 = os.sep.join([pullSourceURL(), f])
 
             tmp2 = tmp1
             tmp1 = tmp2.replace('\\', '/')
             fname.append(tmp1)
-            # import pdb; pdb.set_trace()   #debugger
+
+
 
         # making New Directory Path(s) from old Paths 
         for i in range(0, len(d_names)):
@@ -288,8 +290,7 @@ def branchMe(name):
         else:
             for item in dir_name:
                 # logic for making Saved_folder tree structure
-                savedItemURL = item.replace(
-                    sourcePathMe, savedStrToReplace)
+                savedItemURL = item.replace(sourcePathMe, savedStrToReplace)
                 print savedItemURL            
 
         # making files, Dest Paths!
@@ -310,21 +311,25 @@ def branchMe(name):
                 newFileData.append(tmp1)
                 if(tmp1==[] or tmp1 == ""):
                     print "no data in ", sourced, " !"
-            # import pdb; pdb.set_trace()   #debugger
+
         # writing to New
         empty = False
         for i in range(0, len(fname)):
             with open(fname[i], 'r') as amIEmpty:
                 if (amIEmpty.readlines()==[]):
                     empty = True
-                    print "YES empty"
+                    print "YES empty for file: ", fname[i]
 
         # if(empty==True):
-        #     print 
+        #     print
+        # 
+        # ============================= 
+        # the actual logic of creating the files!
         ii=0
+
         for toDest in fileNewPath:
 
-            # import pdb; pdb.set_trace()   #debugger
+
             with open(toDest, 'w') as writingToDest:
                 if(newFileData[ii]==[] or newFileData==""):
                     writingToDest.write('')
@@ -335,18 +340,149 @@ def branchMe(name):
             if(ii <len(newFileData)):
                 ii+=1
 
+        # =============================
+
 # lines
 
+
 def revert2(branchName):
-    pullSourceURL()
-    pullDestURL()
+    # pullSourceURL()
+    # pullDestURL()
 
     
-    if(os.path.exists(pullDestURL()+branchName))==True:
-        print 'Branch to Revert from, exists!'
+    # if(os.path.exists(pullDestURL()+branchName))==True:
+    #     print 'Branch to Revert from, exists!'
     
 
+    fromPath = pullDestURL()
+    toPath = pullSourceURL()
 
+    tmp = fromPath
+
+    fOldPaths = []
+    dir_name = []
+    newFilePath = []
+    i = 0
+    # for root, d_names, f_names in os.walk(fromPath):
+    for root, d_names, f_names in os.walk(pullDestURL()+branchName):
+        print fromPath
+        print d_names, f_names
+
+        # files from Saved Branch
+        for f in f_names:
+            fOldPaths.append(os.path.join(root, f))
+
+            print fOldPaths
+
+
+        for i in range(0, len(d_names)):
+            print i
+
+            tmp = root
+            root = tmp.replace('\\', '/')
+
+            dir_name.append(os.path.join(root, d_names[i]))
+
+            print dir_name
+        
+        # =============================
+    # logic that changes slashes in Path(s)
+    # import pdb; pdb.set_trace()
+    for i in range(0, len(fOldPaths)):
+        tmp = fOldPaths[i]
+        fOldPaths[i] = tmp.replace('\\', '/')
+
+    for i in range(0, len(dir_name)):
+        tmp = dir_name[i]
+        dir_name[i] = tmp.replace('\\', '/')
+
+    # =============================
+    # making the files
+    newFileData = []
+    newFilePath = []  # could just be <dir_name> -> for directories??
+    for fileMe in fOldPaths:
+        with open(fileMe, 'r') as readingDest:
+            global opened
+            opened = readingDest.readlines()
+            # global destPathURL
+            # destPathURL = opened[0]
+            newFileData.append(opened)
+            readingDest.close()
+            print "\n"+fileMe
+            print opened
+            # return opened
+            # OLD??
+            # newFilePath.append(fileMe.replace(sourcePathMe, savedStrToReplace))       
+
+    for oldFile in fOldPaths:
+        newFilePath.append(oldFile.replace(fromPath+branchName, toPath))
+
+    print newFilePath
+
+
+    # this may be dangerous
+    # for f in sourcePathMe:
+    #     os.remove(f)
+
+    # delete all in SourceFolder URL
+    #     shutil.rmtree(pullSourceURL()+'/')
+
+    # =============================
+    # making new Directory paths
+    savedItemURL = []
+    for item in dir_name:
+        # logic for making Saved_folder tree structure
+        savedItemURL.append(item.replace(pullDestURL()+branchName, pullSourceURL()))
+        print 'savedItemURL', savedItemURL
+
+
+
+    # ============Creating Folders==============
+    dirsToMake = []
+    for item in savedItemURL:
+        dirsToMake.append(item)
+    print 'dirs\n', dirsToMake        
+
+    # (loop) for loop for making Directory(s)
+    try:
+        dirsToMake
+    except:
+        print "No directories to Revert from."
+    else:
+        for pathCreate in dirsToMake:
+            # tmp = os.path.join(pathCreate)
+            # os.mkdir(tmp)
+            if not os.path.exists(pathCreate):
+                os.makedirs(pathCreate)
+                print pathCreate, "\ncreated!!!"
+            else:
+                print "Already exists!!!"
+
+    # =============================
+    # os.makedirs(pullSourceURL())
+    if os.path.exists(pullSourceURL()) == False:
+        print 'ran'
+        os.makedirs(pullSourceURL())
+
+    # ==============Creating Files===============
+    # for loop for making Files!
+    ii = 0
+    for item in newFilePath:
+        print 'item new? ', item
+        with open(item, 'w') as savedDest:
+            print "savedDest", savedDest
+            
+            # import pdb; pdb.set_trace()
+            
+            
+            # print '\n====\n', newFileData[ii]
+            savedDest.write((' '.join(newFileData[ii])))
+            print "written:\n", ' '.join(newFileData[ii])
+            savedDest.close()
+        if(ii < len(newFilePath)):
+            ii += 1
+
+    # import pdb; pdb.set_trace()   #debugger
 
     # dumping into <sourcePathMe>
     # pulling from <destPathURL>
@@ -362,7 +498,7 @@ def revert2(branchName):
     #     tmp = path
     #     path = tmp.replace('\\', '/')
 
-    #     fname = []
+    #     fOldPaths = []
     #     dir_name = []
     #     i = 0
     #     for root, d_names, f_names in os.walk(path):
@@ -569,11 +705,11 @@ for i, argMe in enumerate(sys.argv):
         # =============================
 
         if(argMe == '-revert'):
-            pullSourceURL()
-            pullDestURL()
-            if os.path.isdir(sourcePathMe):
+            # pullSourceURL()
+            # pullDestURL()
+            if os.path.isdir(pullSourceURL()):
                 print "Source Path is good"
-                print sourcePathMe
+                print pullSourceURL()
                 try:
                     sys.argv[i+1]
                 except:
@@ -581,26 +717,11 @@ for i, argMe in enumerate(sys.argv):
                 else:
                     revert2(sys.argv[i+1])
             else:
-                os.makedirs(sourcePathMe)
+                os.makedirs(pullSourceURL())
                 print "Source Path (Re)Created!"
 
                 revert2(sys.argv[i+1])
 
-                
-
-
-            # os.path.abspath(sourcePathMe)
-            # os.chdir('..')
-            # saved = os.path.join(os.getcwd(), 'Saved/')
-            # if os.path.isdir(saved):
-            #     print saved
-            #     print 'path is Valid'
-            # else:
-            #     print 'path is Invalid'
-                # print "Your options"
-                # print os.listdir(sourcePathMe);/
-
-            # srcMe = raw_input("Which branch to go back too?")
 
         # =============================
         if(argMe == '-pullBranches'):
