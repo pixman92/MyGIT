@@ -6,15 +6,40 @@ import shutil
 import sys
 import datetime
 
+
 # ==========================
 # sourcePathMe - check if Valid
 # if os.path.isdir(sourcePathMe):
 
-def init():
-    if(os.path.exists(os.getcwd()+'/savedGITAlternative') == False):
-        os.makedirs(os.getcwd()+'/savedGITAlternative')
-    else:
-        print "already made"
+#   C:\Users\gotru\OneDrive\testFolder\
+
+def init(dir):
+
+
+    # tmp = (os.path.join((dir.format(__file__)),'/savedGITAlternative'))
+    tmp = dir
+    dir = tmp.replace('\t', '/t')
+
+    tmp = dir
+    tmp3 = tmp
+    tmp = tmp3.replace('\\', '/')
+    
+    folderToMake = os.sep.join([tmp, 'savedGITAlternative'])
+
+    tmp = folderToMake
+    folderToMake = tmp.replace('\\','/')
+
+    # if(os.path.exists(tmp) == False):
+    print "Make a folder to Path of: ", folderToMake
+    print "???"
+    input = raw_input("yes/no\n")
+    if(input == 'yes'):
+        os.makedirs(folderToMake)
+        
+    import pdb; pdb.set_trace()   #debugger
+    # else:
+        # print "already made"
+    # import pdb; pdb.set_trace()   #debugger
     
     if(os.path.exists(os.getcwd()+'/savedGITAlternative/savedURL.txt')==False):
         print "Need to specify \'SavedURL.txt\'"
@@ -34,60 +59,15 @@ def setSourceURL(urlMeToSourceCode):
     # save path to sourceFolder
 
     # if(os.path.exists(os.getcwd()+'/savedGITAlternative/savedURL.txt')==False):
-    file_name = os.getcwd()+'/savedGITAlternative/savedURL.txt'
+    file_name = os.path.join(os.getcwd(), 'savedGITAlternative/savedURL.txt')
+
+    tmp = file_name
+    file_name = tmp.replace('\\', '/')
+
+    # import pdb; pdb.set_trace()   #debugger
     with open(file_name, 'w') as sourceFile:
         sourceFile.write(urlMeToSourceCode)
         sourceFile.close()
-    # else:
-    #     print "alreay there"
-
-    # if (urlMe == "''"):
-    #     print "\n========\nPLEASE! You need to specify an Existing Path!\n========\n"
-    # else:
-
-    #     if urlMe[len(urlMe)-1] == '/':
-    #         print "Uh oh, Source Path should not end with \'\\'!!"
-    #     else:
-    #         try:
-    #             os.path.exists(urlMe)
-    #         except:
-    #             print "Source not made!"
-    #         else:
-
-    #             try:
-    #                 os.path.isdir(urlMe)
-    #             except:
-    #                 print "Source Path entered! Not a URL"
-    #             else:
-    #                 print "Creating the URL!"
-    #                 if os.path.exists(urlMe) == True:
-    #                     print "already exists\nLeaving"
-    #                     sourcePathMe = os.path.join(urlMe, 'savedURL.txt')
-
-    #                     tmp = sourcePathMe
-    #                     sourcePathMe = tmp.replace('\\', '/')
-                        
-    #                 else:
-    #                     os.makedirs(urlMe)
-    #                     # if os.path.isdir(urlMe):
-    #                     # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-    #                     file_name = os.path.join(urlMe, 'savedURL.txt')
-
-    #                     # universal Path maker
-    #                     tmp = file_name
-    #                     file_name = tmp.replace('\\', '/')
-
-    #                     # make the URL universal
-    #                     tmp = urlMe
-    #                     urlMe = tmp.replace('\\', '/')
-
-    #                     with open(file_name, 'w') as data:
-    #                         data.write(urlMe)
-    #                         data.close()
-
-
-
-
 
 # global sourcePathMe
 
@@ -133,25 +113,22 @@ def cleanSourceURL():
 
 def saveDestURL(strSavedToDestURL):
     # saves a path to where you want the commits to save to, a path string
+    file_name = os.path.join(os.getcwd() + '/savedGITAlternative/savedDestURL.txt')
 
+    tmp = file_name
+    file_name = tmp.replace('\\', '/') 
 
-    if(os.path.exists(os.getcwd()+'/savedGITAlternative/savedDestURL.txt')==False):
-        file_name = os.path.exists(os.getcwd()+'/savedGITAlternative/savedDestURL.txt')
-
-        with open(file_name, 'w') as destFile:
-            destFile.write(strSavedToDestURL)
-            destFile.close()
-    else:
-        print 'already a destination file'
-
-        
+    with open(file_name, 'w') as destFile:
+        destFile.write(strSavedToDestURL)
+        destFile.close()
+      
 
 
 def pullDestURL():
     # pulls up the destPathURL string
     # pullSourceURL()
 
-    file_name = os.getcwd()+'/savedGITAlternative/savedDestURL.txt'
+    file_name = os.path.join(os.getcwd(), '/savedGITAlternative/savedDestURL.txt')
         # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
         # global theSource
         # theSource = file_name
@@ -188,10 +165,13 @@ def saveAMilestone(message):
 
 
 # ==========================
-def run():
-    revert2('nope3')
-    # pullSourceURL()
-    # shutil.rmtree(sourcePathMe+'/')
+# def run():
+    # tmp = os.path.dirname(file)
+    # dir_path = os.path.dirname(os.path.realpath(file))    # shutil.rmtree(sourcePathMe+'/')
+    # return dir_path
+
+    
+    # return tmp
 # ==========================
 
 
@@ -293,9 +273,13 @@ def revert2(branchName):
     pullSourceURL()
     pullDestURL()
 
-    if os.path.exists(pullSourceURL()) == False:
-        print 'ran'
-        os.makedirs(sourcePathMe()+'/')
+    
+    if(os.path.exists(pullDestURL()+branchName))==True:
+        print 'Branch to Revert from, exists!'
+    
+
+
+
     # dumping into <sourcePathMe>
     # pulling from <destPathURL>
 
@@ -592,3 +576,4 @@ for i, argMe in enumerate(sys.argv):
             print "========"
             # except:
             #     print 'error'
+
