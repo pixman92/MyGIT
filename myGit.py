@@ -666,19 +666,13 @@ for i, argMe in enumerate(sys.argv):
     # if(argMe == '-source'):
 
         if(argMe == '-changeSource'):
-
-            try:
-                sys.argv[i+1]
-            except:
-                print "error with parameters"
-            else:
-                # cleanSourceURL()
-                # if(i+1<len(sys.argv)):
-                # meChanged = sys.argv[i+1].replace('\\', '/')
-                saveSourceURL(sys.argv[i+1])
-                pullSourceURL()
-                saveDestURL('')
-                pullDestURL()
+            # cleanSourceURL()
+            # if(i+1<len(sys.argv)):
+            # meChanged = sys.argv[i+1].replace('\\', '/')
+            saveSourceURL(sys.argv[i+1])
+            pullSourceURL()
+            saveDestURL('')
+            pullDestURL()
 
         # =============================
 
