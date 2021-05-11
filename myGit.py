@@ -16,60 +16,66 @@ import datetime
 def saveSourceURL(urlMe):
     # save path to sourceFolder
 
-
-    if urlMe[len(urlMe)-1] == '/':
-        print "Uh oh, Source Path should not end with \'\\'!!"
+    if (urlMe == "''"):
+        print "\n========\nPLEASE! You need to specify an Existing Path!\n========\n"
     else:
-        try:
-            os.path.exists(urlMe)
-        except:
-            print "Source not made!"
+
+        if urlMe[len(urlMe)-1] == '/':
+            print "Uh oh, Source Path should not end with \'\\'!!"
         else:
-
             try:
-                os.path.isdir(urlMe)
+                os.path.exists(urlMe)
             except:
-                print "Source Path entered! Not a URL"
+                print "Source not made!"
             else:
-                print "Creating the URL!"
-                os.makedirs(urlMe)
-                # if os.path.isdir(urlMe):
-                file_name = os.path.join(os.getcwd(), 'savedURL.txt')
 
-                # universal Path maker
-                tmp = file_name
-                file_name = tmp.replace('\\', '/')
+                try:
+                    os.path.isdir(urlMe)
+                except:
+                    print "Source Path entered! Not a URL"
+                else:
+                    print "Creating the URL!"
+                    if os.path.exists(urlMe) == True:
+                        print "already exists\nLeaving"
+                    else:
+                        os.makedirs(urlMe)
+                        # if os.path.isdir(urlMe):
+                        file_name = os.path.join(os.getcwd(), 'savedURL.txt')
 
-                # make the URL universal
-                tmp = urlMe
-                urlMe = tmp.replace('\\', '/')
+                        # universal Path maker
+                        tmp = file_name
+                        file_name = tmp.replace('\\', '/')
 
-                with open(file_name, 'w') as data:
-                    data.write(urlMe)
-                    data.close()
+                        # make the URL universal
+                        tmp = urlMe
+                        urlMe = tmp.replace('\\', '/')
+
+                        with open(file_name, 'w') as data:
+                            data.write(urlMe)
+                            data.close()
 
 
-        # else:
-        #     # if it's a new Directory -> make it, else if non value dir
-        #     print "\n====\nTry again, needs to be Valid Directory\n===="
-        #     createDir = raw_input(
-        #         "\nWould you like to create this \"" + urlMe + "\" as a New Path? ")
-        #     # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-        #     if(createDir == "yes"):
-        #         os.mkdir(urlMe)
-        #         # if os.path.isdir(urlMe):
-        #         #     print "made dir, is Valid"
-        #         file_name = os.path.join(urlMe, 'savedURL.txt')
-        #         tmp = file_name
-        #         file_name = tmp.replace('\\', '/')
+            # else:
+            #     # if it's a new Directory -> make it, else if non value dir
+            #     print "\n====\nTry again, needs to be Valid Directory\n===="
+            #     createDir = raw_input(
+            #         "\nWould you like to create this \"" + urlMe + "\" as a New Path? ")
+            #     # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
+            #     if(createDir == "yes"):
+            #         os.mkdir(urlMe)
+            #         # if os.path.isdir(urlMe):
+            #         #     print "made dir, is Valid"
+            #         file_name = os.path.join(urlMe, 'savedURL.txt')
+            #         tmp = file_name
+            #         file_name = tmp.replace('\\', '/')
 
-        #         # make the URL universal
-        #         tmp = urlMe
-        #         urlMe = tmp.replace('\\', '/')
+            #         # make the URL universal
+            #         tmp = urlMe
+            #         urlMe = tmp.replace('\\', '/')
 
-        #         with open(file_name, 'w') as data:
-        #             data.write(urlMe)
-        #             data.close()
+            #         with open(file_name, 'w') as data:
+            #             data.write(urlMe)
+            #             data.close()
 
 
 
@@ -117,10 +123,13 @@ def saveDestURL(strSavedToDestURL):
 
     pullSourceURL()
 
-    if(strSavedToDestURL == ""):
-        print "It seems you didn't specify a PATH Directory for your source, it will now point to the root Directory, \'Saved\'"
+    # if(strSavedToDestURL == ""):
+    #     print "It seems you didn't specify a PATH Directory for your source, it will now point to the root Directory, \'Saved\'"
 
-    import pdb; pdb.set_trace()   #debugger
+
+
+
+    # import pdb; pdb.set_trace()   #debugger
 
     # pullSourceURL()
 
@@ -140,17 +149,31 @@ def saveDestURL(strSavedToDestURL):
     # add filename
     file_name = os.path.join(meChangedDest, 'savedDestURL.txt')
 
-    import pdb; pdb.set_trace()   #debugger
+    # import pdb; pdb.set_trace()   #debugger
 
     # make file_name global, to be used in pullDestURL()
     # global destPathSet
     # destPathSet = file_name
     # import pdb; pdb.set_trace()
+    
+    # try:
+    #     os.path.exists(file_name) == False
+    # except:
+    #     print 'path already made'
+    # else:
+    #     with open(file_name, 'w') as savedDest:
+    #         savedDest.write(saved)
+    #         savedDest.close()
+    #     print saved
 
-    with open(file_name, 'w') as savedDest:
-        savedDest.write(saved)
-        savedDest.close()
-    print saved
+    if os.path.exists(file_name) == True:
+        print 'path already made'
+        destPathURL = file_name
+    else:
+        with open(file_name, 'w') as savedDest:
+            savedDest.write(saved)
+            savedDest.close()
+        print saved
 
 
 def pullDestURL():
@@ -164,9 +187,10 @@ def pullDestURL():
     # file_name = os.path.join(os.getcwd(), 'savedDestURL.txt')
 
     try:
-        os.path.exits(sourcePathMe)
+        os.path.isdir(sourcePathMe)
     except:
         print "sourcePathMe undefined! Try reseting with <-changeSource> param"
+    else:
 
         # =============================
         # make a LEVEL UP path
@@ -185,9 +209,22 @@ def pullDestURL():
         # add filename
         file_name = os.path.join(meChangedDest, 'savedDestURL.txt')
 
-        try:
-            file_name
-        except:
+        # try:
+        #     file_name
+        # except:
+        #     print 'destPathURL, could not be located!'
+        # else:
+        #     with open(file_name, 'r') as readingDest:
+        #         returnMe = readingDest.readlines()
+        #         global destPathURL
+        #         destPathURL = returnMe[0]
+        #         readingDest.close()
+        #         print 'destPathURL', destPathURL
+        #         print 'file_name', file_name
+        #         # return returnMe
+        # import pdb; pdb.set_trace()   #debugger
+
+        if os.path.exists(file_name)==False:
             print 'destPathURL, could not be located!'
         else:
             with open(file_name, 'r') as readingDest:
@@ -197,7 +234,7 @@ def pullDestURL():
                 readingDest.close()
                 print 'destPathURL', destPathURL
                 print 'file_name', file_name
-                # return returnMe
+                # return returnMe  
 
 
 # ==========================
@@ -587,6 +624,9 @@ print sys.argv
 # os.getcwd()
 
 for i, argMe in enumerate(sys.argv):
+        if(sys.argv[0] == ""): 
+            print "\n\n==============\nYou may be new here!\n\nTo get things going, add a source PATH Location!\n\nUse the <-changeSource> command after the String of Python Path!"
+
     # making CLI stuff
 
     # if(argMe == '-source'):
