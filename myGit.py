@@ -162,7 +162,7 @@ def saveDestURL(strSavedToDestURL):
     # os.path.abspath(sourcePathMe)
     # os.chdir('..')
 
-    if(os.path.exists(sourcePathMe)==False):
+    if(sourcePathMe!=None and os.path.exists(sourcePathMe)==False):
         print "Tried to make a Dest Path, but you need a Source Path first!"
     else:
         # make a LEVEL UP path
