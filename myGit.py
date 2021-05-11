@@ -17,6 +17,8 @@ def init(dir):
 
 
     # tmp = (os.path.join((dir.format(__file__)),'/savedGITAlternative'))
+    
+    # this was getting tripped up by the \t = a tab space!
     tmp = dir
     dir = tmp.replace('\t', '/t')
 
@@ -29,14 +31,15 @@ def init(dir):
     tmp = folderToMake
     folderToMake = tmp.replace('\\','/')
 
-    # if(os.path.exists(tmp) == False):
-    print "Make a folder to Path of: ", folderToMake
-    print "???"
-    input = raw_input("yes/no\n")
-    if(input == 'yes'):
-        os.makedirs(folderToMake)
+    if(os.path.exists(tmp) == True):
+        print "Alreay Exists"
+    else:
+        print "Make a folder to Path of: ", folderToMake
+        print "???"
+        input = raw_input("yes/no\n")
+        if(input == 'yes'):
+            os.makedirs(folderToMake)
         
-    import pdb; pdb.set_trace()   #debugger
     # else:
         # print "already made"
     # import pdb; pdb.set_trace()   #debugger
@@ -55,18 +58,35 @@ def init(dir):
 
 # ==========================
 # Block of code -> saving SRC path
-def setSourceURL(urlMeToSourceCode):
+def saveSourceURL(urlMeToSourceCode):
     # save path to sourceFolder
 
     # if(os.path.exists(os.getcwd()+'/savedGITAlternative/savedURL.txt')==False):
-    file_name = os.path.join(os.getcwd(), 'savedGITAlternative/savedURL.txt')
+    # file_name = os.path.join(os.getcwd(), 'savedGITAlternative/savedURL.txt')
 
-    tmp = file_name
-    file_name = tmp.replace('\\', '/')
+    # replacing literal char(s)
+    # tmp2 = os.getcwd()
+    paramNoTab = ""
+    # urlMeToSourceCode = paramNoTab
+    paramNoTab = urlMeToSourceCode
+    urlMeToSourceCode = paramNoTab.replace('\\t', '/t')
+    
+    tmp2 = os.getcwd()
+    tmp = tmp2
+    tmp2 = tmp.replace('\\t', '/t')
+
+
+    file_name_source = os.sep.join([tmp2, 'savedGITAlternative/savedURL.txt'])
+
+
+    tmp = file_name_source
+    file_name_source = tmp.replace('\\', '/')
+
+
 
     # import pdb; pdb.set_trace()   #debugger
-    with open(file_name, 'w') as sourceFile:
-        sourceFile.write(urlMeToSourceCode)
+    with open(file_name_source, 'w') as sourceFile:
+        sourceFile.write(paramNoTab)
         sourceFile.close()
 
 # global sourcePathMe
@@ -74,12 +94,28 @@ def setSourceURL(urlMeToSourceCode):
 
 def pullSourceURL():
     # pull out the path, saved in text document
-    # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-        file_name = os.getcwd()+'/savedGITAlternative/savedURL.txt'
-        # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
+        # file_name = os.getcwd()+'/savedGITAlternative/savedURL.txt'
+        
+        # tmp2 = os.getcwd()
+        # tmp = tmp2
+        # tmp2 = tmp.replace('\\', '/')
+
+        
+
+        file_name_dest = os.sep.join([os.getcwd(), 'savedGITAlternative/savedURL.txt'])
+
+        tmpFileName = file_name_dest
+        file_name_dest = tmpFileName.replace('\\t', '/t')
+
+        tmp2 = file_name_dest
+        file_name_dest = tmp2.replace('\\', '/')
+
         global theSource
-        theSource = file_name
-        with open(file_name, 'r') as data:
+        theSource = file_name_dest
+
+        # import pdb; pdb.set_trace()   #debugger
+
+        with open(file_name_dest, 'r') as data:
             returnMe = data.readlines()
 
             # if(returnMe[0] is not None):
@@ -113,10 +149,33 @@ def cleanSourceURL():
 
 def saveDestURL(strSavedToDestURL):
     # saves a path to where you want the commits to save to, a path string
-    file_name = os.path.join(os.getcwd() + '/savedGITAlternative/savedDestURL.txt')
+    # file_name = os.path.join(os.getcwd() + '/savedGITAlternative/savedDestURL.txt')
 
-    tmp = file_name
-    file_name = tmp.replace('\\', '/') 
+    # replacing literal char(s)
+    # tmp2 = os.getcwd()\
+
+    # TODO - make sure the strSavedToDestURL is a valid Path
+
+    # if(os.path.exists(strSavedToDestURL)==True):
+
+    paramNoTab = ""
+    paramNoTab = strSavedToDestURL
+    strSavedToDestURL = paramNoTab.replace('\t', '/t')
+
+    tmp2 = os.getcwd()
+    tmp = tmp2
+    tmp2 = tmp.replace('\\t', '/t')
+
+
+    file_name = os.sep.join([tmp2, 'savedGITAlternative/savedDestURL.txt'])
+
+
+    # paramNoTab = strSavedToDestURL
+    strSavedToDestURL = strSavedToDestURL.replace('\\', '/')
+    
+    tmp3 = file_name
+    file_name = tmp3.replace('\\', '/') 
+
 
     with open(file_name, 'w') as destFile:
         destFile.write(strSavedToDestURL)
@@ -125,32 +184,41 @@ def saveDestURL(strSavedToDestURL):
 
 
 def pullDestURL():
+    # seems to be working!
+
     # pulls up the destPathURL string
     # pullSourceURL()
 
-    file_name = os.path.join(os.getcwd(), '/savedGITAlternative/savedDestURL.txt')
-        # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-        # global theSource
-        # theSource = file_name
-    with open(file_name, 'r') as data:
-        returnMe = data.readlines()
+    # file_name = os.path.join(os.getcwd(), '/savedGITAlternative/savedDestURL.txt')
+    file_name = os.sep.join([os.getcwd(), 'savedGITAlternative/savedDestURL.txt'])
 
-        try:
-            returnMe[0]
-        except:
-            print "Blank Destination File"
-        else:
 
-            global destPathURL
-            destPathURL = returnMe[0]
 
-            tmp = destPathURL
-            destPathURL = tmp.replace('\\', '/')
+    if(os.path.exists(file_name)==False):
+        print "Blank Destination File Error 1 - Create a Dest File"
+    else:
+            # global theSource
+            # theSource = file_name
+        with open(file_name, 'r') as data:
+            returnMe = data.readlines()
 
-            print "destPathURL: ", destPathURL
+            try:
+                returnMe[0]
+            except:
+                print "Blank Destination File Error 2 - Dest file - blank"
+            else:
 
-            data.close()
-            return destPathURL
+                global destPathURL
+                destPathURL = returnMe[0]
+
+                tmp = destPathURL
+                destPathURL = tmp.replace('\\', '/')
+
+                print "destPathURL: ", destPathURL
+
+                data.close()
+                return destPathURL
+
 
 
 
@@ -464,8 +532,8 @@ for i, argMe in enumerate(sys.argv):
             # meChanged = sys.argv[i+1].replace('\\', '/')
             saveSourceURL(sys.argv[i+1])
             pullSourceURL()
-            saveDestURL('')
-            pullDestURL()
+            # saveDestURL('')
+            # pullDestURL()
 
         # =============================
 
@@ -554,7 +622,7 @@ for i, argMe in enumerate(sys.argv):
             pullDestURL()
             # try:
             print "========"
-            # print "sourcePathMe:"
+            print "sourcePathMe:"
             try:
                 sourcePathMe
             except:
@@ -565,7 +633,7 @@ for i, argMe in enumerate(sys.argv):
 
             print "\n"
 
-            # print "destPathURL:"
+            print "destPathURL:"
             try:
                 destPathURL
             except:
