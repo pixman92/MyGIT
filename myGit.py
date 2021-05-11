@@ -84,30 +84,53 @@ def saveSourceURL(urlMe):
 def pullSourceURL():
     # pull out the path, saved in text document
     # file_name = os.path.join(os.getcwd(), 'savedURL.txt')
-    try:
-        file_name = os.path.join(os.getcwd(), 'savedURL.txt')
+    # try:
+    #     file_name = os.path.join(os.getcwd(), 'savedURL.txt')
       
-            # return returnMe
-    except:
-        print "error"
-        print "you need to set Source Path"
-        print file_name
-        print theSource
-    global theSource
-    theSource = file_name
-    with open(file_name, 'r') as data:
-        returnMe = data.readlines()
-        global sourcePathMe
+    #         # return returnMe
+    # except:
+    #     print "error"
+    #     print "you need to set Source Path"
+    #     print file_name
+    #     print theSource
+    # global theSource
+    # theSource = file_name
+    # with open(file_name, 'r') as data:
+    #     returnMe = data.readlines()
+    #     global sourcePathMe
 
 
-        sourcePathMe = returnMe[0]
+    #     sourcePathMe = returnMe[0]
 
-        tmp = sourcePathMe
-        sourcePathMe = tmp.replace('\\', '/')
+    #     tmp = sourcePathMe
+    #     sourcePathMe = tmp.replace('\\', '/')
 
-        print "sourcePathMe: ", sourcePathMe
+    #     print "sourcePathMe: ", sourcePathMe
 
-        data.close()
+    #     data.close()
+    # if file_name = os.path.join(os.getcwd(), 'savedURL.txt')
+    if os.path.exists(os.path.join(os.getcwd(), 'savedURL.txt')):
+        print "Already Exists!"
+    else:
+        # print "error"
+        # print "you need to set Source Path"
+        # print file_name
+        # print theSource
+        global theSource
+        theSource = file_name
+        with open(file_name, 'r') as data:
+            returnMe = data.readlines()
+            global sourcePathMe
+
+
+            sourcePathMe = returnMe[0]
+
+            tmp = sourcePathMe
+            sourcePathMe = tmp.replace('\\', '/')
+
+            print "sourcePathMe: ", sourcePathMe
+
+            data.close()
 
 
 def cleanSourceURL():
