@@ -162,43 +162,47 @@ def saveDestURL(strSavedToDestURL):
     # os.path.abspath(sourcePathMe)
     # os.chdir('..')
 
-    # make a LEVEL UP path
-    preGetPath = os.path.abspath(os.path.join(sourcePathMe, '..'))
-    # end it with a slash
-    preGetPath = preGetPath + '/'
-
-    # change all slashes
-    meChangedDest = preGetPath.replace('\\', '/')
-    # save file path (all but filename)
-    saved = os.path.join(meChangedDest, 'Saved/')
-    # add filename
-    file_name = os.path.join(meChangedDest, 'savedDestURL.txt')
-
-    # import pdb; pdb.set_trace()   #debugger
-
-    # make file_name global, to be used in pullDestURL()
-    # global destPathSet
-    # destPathSet = file_name
-    # import pdb; pdb.set_trace()
-    
-    # try:
-    #     os.path.exists(file_name) == False
-    # except:
-    #     print 'path already made'
-    # else:
-    #     with open(file_name, 'w') as savedDest:
-    #         savedDest.write(saved)
-    #         savedDest.close()
-    #     print saved
-
-    if os.path.exists(file_name) == True:
-        print 'path already made'
-        destPathURL = file_name
+    if(os.path.exists(sourcePathMe)==False):
+        print "Tried to make a Dest Path, but you need a Source Path first!"
     else:
-        with open(file_name, 'w') as savedDest:
-            savedDest.write(saved)
-            savedDest.close()
-        print saved
+        # make a LEVEL UP path
+        preGetPath = os.path.abspath(os.path.join(sourcePathMe, '..'))
+        # end it with a slash
+        preGetPath = preGetPath + '/'
+
+        # change all slashes
+        meChangedDest = preGetPath.replace('\\', '/')
+        # save file path (all but filename)
+        saved = os.path.join(meChangedDest, 'Saved/')
+        # add filename
+        file_name = os.path.join(meChangedDest, 'savedDestURL.txt')
+
+        # import pdb; pdb.set_trace()   #debugger
+
+        # make file_name global, to be used in pullDestURL()
+        # global destPathSet
+        # destPathSet = file_name
+        # import pdb; pdb.set_trace()
+        
+        # try:
+        #     os.path.exists(file_name) == False
+        # except:
+        #     print 'path already made'
+        # else:
+        #     with open(file_name, 'w') as savedDest:
+        #         savedDest.write(saved)
+        #         savedDest.close()
+        #     print saved
+
+        if os.path.exists(file_name) == True:
+            print 'path already made'
+            destPathURL = file_name
+        else:
+            with open(file_name, 'w') as savedDest:
+                savedDest.write(saved)
+                savedDest.close()
+            print saved
+        
 
 
 def pullDestURL():
