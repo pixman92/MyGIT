@@ -166,7 +166,7 @@ def saveDestURL(strSavedToDestURL):
     except:
         print "Source Path, undefined! Take care of this first!"
     else:
-        if(sourcePathMe!=None and os.path.exists(sourcePathMe)==False):
+        if(sourcePathMe!=None or os.path.exists(sourcePathMe)==False):
             print "Tried to make a Dest Path, but you need a Source Path first!"
         else:
             # make a LEVEL UP path
