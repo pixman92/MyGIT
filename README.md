@@ -5,6 +5,12 @@ I could not find a GIT SVC system for ChromeOS, so I built this
 ```
 # Commands for this Sript
 
+# quickly iniitalize with 3 Arguments
+-quickinit <Path of init> <Path to SourceCode> <Path to SavedCode>
+
+# init - to setup the folder holding the Source&Dest Paths
+-init <Path>
+
 # changing the source folder
 -changeSource <Path>
 
