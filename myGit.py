@@ -234,7 +234,7 @@ def saveAMilestone(message):
 
 # ==========================
 def run():
-    revert2('hello')
+    branchMe('hellothere')
     # tmp = os.path.dirname(file)
     # dir_path = os.path.dirname(os.path.realpath(file))    # shutil.rmtree(sourcePathMe+'/')
     # return dir_path
@@ -290,12 +290,14 @@ def branchMe(name):
         else:
             for item in dir_name:
                 # logic for making Saved_folder tree structure
-                savedItemURL = item.replace(sourcePathMe, savedStrToReplace)
+                savedItemURL = item.replace(pullSourceURL(), pullDestURL())
+                import pdb; pdb.set_trace()   #debugger
                 print savedItemURL            
+
 
         # making files, Dest Paths!
         for f in f_names:
-            tmp1 = os.path.join(pullDestURL(), name);
+            tmp1 = os.path.join(pullDestURL(), name)
             tmp2 = os.path.join(tmp1, f)
 
             tmp3 = tmp2
@@ -341,7 +343,7 @@ def branchMe(name):
                 ii+=1
 
         # =============================
-
+        import pdb; pdb.set_trace()   #debugger
 # lines
 
 
@@ -765,4 +767,11 @@ for i, argMe in enumerate(sys.argv):
             print "========"
             # except:
             #     print 'error'
-
+        # =============================
+        if(argMe == '-init'):
+            try:
+                sys.argv[i+1]
+            except:
+                print "Needs a Path!"
+            else:
+                init(sys.argv[i+1])
