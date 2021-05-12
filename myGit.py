@@ -226,10 +226,22 @@ def pullDestURL():
 
 
 def saveAMilestone(message):
-    now = datetime.datetime.now()
-    with open('log.txt', 'w') as log:
-        log.write(now, ' --- ', message)
-        log.close()
+    metime = str(datetime.datetime.now())
+    file_name_log = os.path.join(pullSourceURL(), 'log.txt')
+    if(os.path.exists(file_name_log)==True):
+        with open(file_name_log, 'a') as log:
+            txt = '\n\n'+metime + ' --- ' + message
+            log.write(txt)
+            log.close()
+            print 'Written time and message to Log.txt file'
+            print txt
+    else:
+        with open(file_name_log, 'w') as log:
+            txt = '\n\n'+metime + ' --- ' + message
+            log.write(txt)
+            log.close()
+            print 'Written time and message to Log.txt file'
+            print txt
 
 
 # ==========================
@@ -671,7 +683,7 @@ for i, argMe in enumerate(sys.argv):
             else:
                 init(sys.argv[i+1])
 
-
+        # =============================
         if(argMe == '-changeSource'):
             # cleanSourceURL()
             # if(i+1<len(sys.argv)):
@@ -746,6 +758,15 @@ for i, argMe in enumerate(sys.argv):
                 print "\nThese are your Saved Branchess"
                 print os.listdir(destPathURL)
                 print "----"
+
+        # =============================
+        if(argMe == '-log'):
+            try:
+                sys.argv[i+1]
+            except:
+                print "Please include a Message to append to Log.txt file!"
+            else:
+                saveAMilestone(str(sys.argv[i+1]))
 
         # =============================
         if(argMe == '-list'):
