@@ -291,7 +291,7 @@ def branchMe(name):
             for item in dir_name:
                 # logic for making Saved_folder tree structure
                 savedItemURL = item.replace(pullSourceURL(), pullDestURL())
-                import pdb; pdb.set_trace()   #debugger
+                # import pdb; pdb.set_trace()   #debugger
                 print savedItemURL            
 
 
@@ -343,7 +343,7 @@ def branchMe(name):
                 ii+=1
 
         # =============================
-        import pdb; pdb.set_trace()   #debugger
+        # import pdb; pdb.set_trace()   #debugger
 # lines
 
 
@@ -427,7 +427,7 @@ def revert2(branchName):
     #     os.remove(f)
 
     # delete all in SourceFolder URL
-    #     shutil.rmtree(pullSourceURL()+'/')
+    shutil.rmtree(pullSourceURL()+'/')
 
     # =============================
     # making new Directory paths
