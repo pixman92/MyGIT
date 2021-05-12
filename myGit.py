@@ -266,13 +266,21 @@ def saveAMilestone(message):
 
 # ==========================
 def run():
-    branchMe('hellothere')
-    # tmp = os.path.dirname(file)
-    # dir_path = os.path.dirname(os.path.realpath(file))    # shutil.rmtree(sourcePathMe+'/')
-    # return dir_path
+    revert('goaway')
 
     
-    # return tmp
+    # allBranches = []
+    # allBranches = os.listdir(pullDestURL())
+    # amIThere = False
+    # for me in allBranches:
+    #     if(me != 'goaway'):
+    #         print 'No Mach'
+    #     else:
+    #         print "Matched!"
+    #         amIThere = True
+    # if(amIThere == True):
+
+
 # ==========================
 
 
@@ -387,134 +395,202 @@ def revert(branchName):
     # if(os.path.exists(pullDestURL()+branchName))==True:
     #     print 'Branch to Revert from, exists!'
     
+    allBranches = []
+    allBranches = os.listdir(pullDestURL())
+    amIThere = False
+    for me in allBranches:
+        if(me != branchName):
+            print 'No Mach per this Name'
+        else:
+            print "Matched!"
+            amIThere = True
 
-    fromPath = pullDestURL()
-    toPath = pullSourceURL()
+    if(amIThere == False):
+        print "NO Match at All"
+    if(amIThere == True):
+        # branchName = str(branchName)
 
-    tmp = fromPath
-
-    fOldPaths = []
-    dir_name = []
-    newFilePath = []
-    i = 0
-    # for root, d_names, f_names in os.walk(fromPath):
-    for root, d_names, f_names in os.walk(pullDestURL()+branchName):
-        print fromPath
-        print d_names, f_names
-
-        # files from Saved Branch
-        for f in f_names:
-            fOldPaths.append(os.path.join(root, f))
-
-            print fOldPaths
+        fromPath = pullDestURL() + '/'+ branchName
+        toPath = pullSourceURL()
 
 
-        for i in range(0, len(d_names)):
-            print i
+        # tmp = fromPath
+        # path = os.path.join(pullDestURL(), branchName)
 
-            tmp = root
-            root = tmp.replace('\\', '/')
+        fOldPaths = []
+        dir_name = []
+        newFilePath = []
+        i = 0
+        newFilePath_to_write=[]
+        for root, d_names, f_names in os.walk(fromPath):
+            # print os.path.join(pullDestURL(), 'hello')
+            # print os.path.exists(os.path.join(pullDestURL(), 'hello'))
+        # for root, d_names, f_names in os.walk(pullDestURL()+branchName):
 
-            dir_name.append(os.path.join(root, d_names[i]))
+            print fromPath
+            print d_names, f_names
 
-            print dir_name
-        
-        # =============================
-    # logic that changes slashes in Path(s)
-    # import pdb; pdb.set_trace()
-    for i in range(0, len(fOldPaths)):
-        tmp = fOldPaths[i]
-        fOldPaths[i] = tmp.replace('\\', '/')
+            # files from Saved Branch - to be read from
+            for f in f_names:
+                fOldPaths.append(os.path.join(root, f))
 
-    for i in range(0, len(dir_name)):
-        tmp = dir_name[i]
-        dir_name[i] = tmp.replace('\\', '/')
+                print fOldPaths
 
-    # =============================
-    # making the files
-    newFileData = []
-    newFilePath = []  # could just be <dir_name> -> for directories??
-    for fileMe in fOldPaths:
-        with open(fileMe, 'r') as readingDest:
-            global opened
-            opened = readingDest.readlines()
-            # global destPathURL
-            # destPathURL = opened[0]
-            newFileData.append(opened)
-            readingDest.close()
-            print "\n"+fileMe
-            print opened
-            # return opened
-            # OLD??
-            # newFilePath.append(fileMe.replace(sourcePathMe, savedStrToReplace))       
+            # make File Path(s) to be written, later on
+            for f2 in f_names:
+                newFilePath_to_write.append(os.path.join(pullSourceURL(), f2))
+                print newFilePath_to_write
 
-    for oldFile in fOldPaths:
-        newFilePath.append(oldFile.replace(fromPath+branchName, toPath))
+            for i in range(0, len(f_names)):
+                tmp = newFilePath_to_write[i]
+                newFilePath_to_write[i] = tmp.replace('\\', '/')
 
-    print newFilePath
+                print newFilePath_to_write
 
+            
+            # =============================
+            for i in range(0, len(d_names)):
+                print i
 
-    # this may be dangerous
-    # for f in sourcePathMe:
-    #     os.remove(f)
+                tmp = root
+                root = tmp.replace('\\', '/')
 
-    # delete all in SourceFolder URL
-    shutil.rmtree(pullSourceURL()+'/')
+                dir_name.append(os.path.join(root, d_names[i]))
 
-    # =============================
-    # making new Directory paths
-    savedItemURL = []
-    for item in dir_name:
-        # logic for making Saved_folder tree structure
-        savedItemURL.append(item.replace(pullDestURL()+branchName, pullSourceURL()))
-        print 'savedItemURL', savedItemURL
+                print dir_name
 
 
-
-    # ============Creating Folders==============
-    dirsToMake = []
-    for item in savedItemURL:
-        dirsToMake.append(item)
-    print 'dirs\n', dirsToMake        
-
-    # (loop) for loop for making Directory(s)
-    try:
-        dirsToMake
-    except:
-        print "No directories to Revert from."
-    else:
-        for pathCreate in dirsToMake:
-            # tmp = os.path.join(pathCreate)
-            # os.mkdir(tmp)
-            if not os.path.exists(pathCreate):
-                os.makedirs(pathCreate)
-                print pathCreate, "\ncreated!!!"
+            if dir_name == []:
+                print "No directories to Revert From"
             else:
-                print "Already exists!!!"
+                # these are the OLDPaths to Saved in a branch Folders
+                dirsFromSaved = []
+                # for item in dir_name:
+                for i in range(0, len(d_names)):
+                    # logic for making Saved_folder tree structure
+                    dirsFromSaved.append(os.path.join(pullSourceURL(), d_names[i]))
 
-    # =============================
-    # os.makedirs(pullSourceURL())
-    if os.path.exists(pullSourceURL()) == False:
-        print 'ran'
-        os.makedirs(pullSourceURL())
+                for i in range(0, len(dirsFromSaved)):
+                    tmp = dirsFromSaved[i]
+                    dirsFromSaved[i] = tmp.replace('\\', '/')
 
-    # ==============Creating Files===============
-    # for loop for making Files!
-    ii = 0
-    for item in newFilePath:
-        print 'item new? ', item
-        with open(item, 'w') as savedDest:
-            print "savedDest", savedDest
+                print 'dirsFromSaved', dirsFromSaved
+                for pathCreate in dirsFromSaved:
+                    # tmp = os.path.join(pathCreate)
+                    # os.mkdir(tmp)
+                    if not os.path.exists(pathCreate):
+                        os.makedirs(pathCreate)
+                        print pathCreate, "\ncreated!!!"
+                    else:
+                        print "Already exists!!!"
+            import pdb; pdb.set_trace()   #debugger  
+
+
+
+
+            # =============================
+        # logic that changes slashes in Path(s)
+
+        for i in range(0, len(fOldPaths)):
+            tmp = fOldPaths[i]
+            fOldPaths[i] = tmp.replace('\\', '/')
+
+        # for i in range(0, len(dir_name)):
+        #     tmp = dir_name[i]
+        #     dir_name[i] = tmp.replace('\\', '/')
+
+        # =============================
+        # Pulling/Reading data from the files
+        newFileData = []
+        newFilePath = []  # could just be <dir_name> -> for directories??
+        for fileMe in fOldPaths:
+            with open(fileMe, 'r') as readingDest:
+                global opened
+                opened = readingDest.readlines()
+                # global destPathURL
+                # destPathURL = opened[0]
+                newFileData.append(opened)
+                readingDest.close()
+                print "\n"+fileMe
+                print opened
+                # return opened
+                # OLD??
+                # newFilePath.append(fileMe.replace(sourcePathMe, savedStrToReplace))       
+
+        # for oldFile in fOldPaths:
+    #         newFilePath.append(oldFile.replace(os.path.join(fromPath, branchName), toPath))
+    #         tmpFile = os.path.join(pullDestURL(), branchName)
+    #         tmpFile2 = oldFile
+    #         tmpIt = tmpFile2.replace(oldFile, '...')
+
+    # oldFile
+    # 'C:/Users/gotru/OneDrive/testFolder/Saved/nope/test.txt'
+        # for f in f_names:
+        for f in fOldPaths:
+            # tmp1 = os.path.join(pullSourceURL(), branchName)
+            tmp1 = os.path.join(pullSourceURL(), f)
+            # tmp2 = os.path.join(tmp1, f)
+
+            tmp2 = tmp1
+            tmp1 = tmp2.replace('\\', '/')
+            newFilePath.append(tmp1)
+
+    
+            # print newFilePath
+
+
+        # this may be dangerous
+        # for f in sourcePathMe:
+        #     os.remove(f)
+
+        # delete all in SourceFolder URL
+        shutil.rmtree(pullSourceURL()+'/')
+
+        # =============================
+
+        
+
+        # ============Creating Folders==============
+        # dirsToMake = []
+        # for item in dirsFromSaved:
+        #     dirsToMake.append(item)
+        # print 'dirs\n', dirsToMake        
+
+        # (loop) for loop for making Directory(s)
+        # try:
+        #     dirsToMake
+        # except:
+        #     print "No directories to Revert from."
+        # else:
             
-            # import pdb; pdb.set_trace()
-            
-            
-            # print '\n====\n', newFileData[ii]
-            savedDest.write((' '.join(newFileData[ii])))
-            print "written:\n", ' '.join(newFileData[ii])
-            savedDest.close()
-        if(ii < len(newFilePath)):
-            ii += 1
+
+
+        # =============================
+        # os.makedirs(pullSourceURL())
+        if os.path.exists(pullSourceURL()) == False:
+            print 'ran'
+            os.makedirs(pullSourceURL())
+
+
+
+        # ==============Creating Files===============
+        # for loop for making Files!
+        ii = 0
+        for item in newFilePath_to_write:
+            print 'item new? ', item
+            with open(item, 'w') as savedDest:
+                print "savedDest", savedDest
+                # print '\n====\n', newFileData[ii]
+                savedDest.write((' '.join(newFileData[ii])))
+                print "written:\n", ' '.join(newFileData[ii])
+                savedDest.close()
+
+            if(ii < len(newFilePath_to_write)):
+                ii += 1
+
+
+
+
 
     # import pdb; pdb.set_trace()   #debugger
 
@@ -696,14 +772,12 @@ for i, argMe in enumerate(sys.argv):
         # =============================
 
         if(argMe == "-quickinit"):
-            try:
-                sys.argv[i+1]
-                sys.argv[i+2]
-                sys.argv[i+3]
-            except:
-                print "Recheck your Paths! One of them has Failed"
-            else:
-                quickInit(sys.argv[i+1], sys.argv[i+2], sys.argv[i+3])
+        
+            tmp1 = raw_input('Init Path?\n')
+            tmp2 = raw_input('Source Path?\n')
+            tmp3 = raw_input('Dest Path?\n')
+            # quickInit(sys.argv[1], sys.argv[2], sys.argv[3])
+            quickInit(tmp1, tmp2, tmp3)
 
 
         # =============================
