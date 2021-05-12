@@ -13,6 +13,26 @@ import datetime
 
 #   C:\Users\gotru\OneDrive\testFolder\
 
+# =============================
+
+def quickInit(initDir, sourceDir, saveDir):
+
+    print "You are using QUICK INITIALIZE"
+    print "InitDir - ", initDir
+    print "SourceDir - ", sourceDir
+    print "SaveDir - ", saveDir
+
+    input = raw_input("Do you want to proceed?\n(yes/no)")
+    if(input=="yes"):
+        init(initDir)
+        saveSourceURL(sourceDir)
+        saveDestURL(saveDir)
+    else:
+        print 'Cancelled'
+
+
+
+# =============================
 def init(dir):
 
 
@@ -673,6 +693,18 @@ for i, argMe in enumerate(sys.argv):
             print "\n\n==============\nYou may be new here!\n\nTo get things going, add a source PATH Location!\n\nUse the <-changeSource> command after the String of Python Path!"
 
         # making CLI stuff
+        # =============================
+
+        if(argMe == "-quickinit"):
+            try:
+                sys.argv[i+1]
+                sys.argv[i+2]
+                sys.argv[i+3]
+            except:
+                print "Recheck your Paths! One of them has Failed"
+            else:
+                quickInit(sys.argv[i+1], sys.argv[i+2], sys.argv[i+3])
+
 
         # =============================
         if(argMe == '-init'):
