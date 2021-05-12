@@ -347,7 +347,7 @@ def branchMe(name):
 # lines
 
 
-def revert2(branchName):
+def revert(branchName):
     # pullSourceURL()
     # pullDestURL()
 
@@ -660,9 +660,17 @@ for i, argMe in enumerate(sys.argv):
         if(sys.argv[0] == ""): 
             print "\n\n==============\nYou may be new here!\n\nTo get things going, add a source PATH Location!\n\nUse the <-changeSource> command after the String of Python Path!"
 
-    # making CLI stuff
+        # making CLI stuff
 
-    # if(argMe == '-source'):
+        # =============================
+        if(argMe == '-init'):
+            try:
+                sys.argv[i+1]
+            except:
+                print "Please define a Path! Of your Main directory"
+            else:
+                init(sys.argv[i+1])
+
 
         if(argMe == '-changeSource'):
             # cleanSourceURL()
@@ -717,12 +725,12 @@ for i, argMe in enumerate(sys.argv):
                 except:
                     print "Branch not found!\nTry creating one! \"-branch <name>\""
                 else:
-                    revert2(sys.argv[i+1])
+                    revert(sys.argv[i+1])
             else:
                 os.makedirs(pullSourceURL())
                 print "Source Path (Re)Created!"
 
-                revert2(sys.argv[i+1])
+                revert(sys.argv[i+1])
 
 
         # =============================
@@ -767,11 +775,4 @@ for i, argMe in enumerate(sys.argv):
             print "========"
             # except:
             #     print 'error'
-        # =============================
-        if(argMe == '-init'):
-            try:
-                sys.argv[i+1]
-            except:
-                print "Needs a Path!"
-            else:
-                init(sys.argv[i+1])
+        
