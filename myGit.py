@@ -1,4 +1,4 @@
-    # import zipfile
+# import zipfile
 import pdb
 import os
 import shutil
@@ -64,15 +64,7 @@ def init(dir):
         # print "already made"
     # import pdb; pdb.set_trace()   #debugger
     
-    if(os.path.exists(os.getcwd()+'/savedGITAlternative/savedURL.txt')==False):
-        print "Need to specify \'SavedURL.txt\'"
-    else:
-        print "\'SavedURL.txt\' is good to go!"
-
-    if(os.path.exists(os.getcwd()+'/savedGITAlternative/savedDestURL.txt')==False):
-        print "Need to specify \'SavedDestURL\'.txt"
-    else:
-        print "\'SavedDestURL\'.txt is good to go!"
+    
 
 
 
@@ -285,8 +277,6 @@ def run():
 
 
 def branchMe(name):
-    pullSourceURL()
-    pullDestURL()
 
     if(os.path.exists(os.path.join(pullDestURL(), name)))==True:
         print "Branch folder exists"
@@ -300,9 +290,11 @@ def branchMe(name):
     i=0
     fileNewPath = []
 
+    path = pullSourceURL()
+
     global newFileData
     newFileData = []
-    for root, d_names, f_names in os.walk(pullSourceURL()):        #changed from 'path' to pullSourceURL()
+    for root, d_names, f_names in os.walk(path):        #changed from 'path' to pullSourceURL()
         print d_names
         print f_names
         # print pullSourceURL()
@@ -319,20 +311,22 @@ def branchMe(name):
 
         # making New Directory Path(s) from old Paths 
         for i in range(0, len(d_names)):
-            dir_name.append(os.path.join(pullDestURL(), d_names[i]))
+            dir_name.append(os.path.join(pullDestURL()+name, d_names[i]))
 
 
         # making new directories
-        try:
-            dir_name
-        except:
-            print "NO directories found"
-        else:
-            for item in dir_name:
-                # logic for making Saved_folder tree structure
-                savedItemURL = item.replace(pullSourceURL(), pullDestURL())
-                # import pdb; pdb.set_trace()   #debugger
-                print savedItemURL            
+        # try:
+        #     dir_name
+        # except:
+        #     print "NO directories found"
+        # else:
+        # if dir_name==[]:
+        #     print "NO Directories found!"
+        # else:
+        #     for item in dir_name:
+        #         # logic for making Saved_folder tree structure
+        #         savedItemURL = item.replace(pullSourceURL(), pullDestURL())
+        #         print savedItemURL            
 
 
         # making files, Dest Paths!
@@ -344,7 +338,7 @@ def branchMe(name):
             tmp2 = tmp3.replace('\\', '/')
             fileNewPath.append(tmp2)
 
-        # reading from old
+        # reading from old (files)
         newFileData = []
         for sourced in fname:
             with open(sourced, 'r') as sourceFile:
@@ -354,7 +348,7 @@ def branchMe(name):
                 if(tmp1==[] or tmp1 == ""):
                     print "no data in ", sourced, " !"
 
-        # writing to New
+        # writing to New (files)
         empty = False
         for i in range(0, len(fname)):
             with open(fname[i], 'r') as amIEmpty:
@@ -382,9 +376,9 @@ def branchMe(name):
             if(ii <len(newFileData)):
                 ii+=1
 
+        import pdb; pdb.set_trace()   #debugger
         # =============================
-        # import pdb; pdb.set_trace()   #debugger
-# lines
+
 
 
 def revert(branchName):
@@ -483,7 +477,6 @@ def revert(branchName):
                         print pathCreate, "\ncreated!!!"
                     else:
                         print "Already exists!!!"
-            import pdb; pdb.set_trace()   #debugger  
 
 
 
@@ -516,16 +509,6 @@ def revert(branchName):
                 # return opened
                 # OLD??
                 # newFilePath.append(fileMe.replace(sourcePathMe, savedStrToReplace))       
-
-        # for oldFile in fOldPaths:
-    #         newFilePath.append(oldFile.replace(os.path.join(fromPath, branchName), toPath))
-    #         tmpFile = os.path.join(pullDestURL(), branchName)
-    #         tmpFile2 = oldFile
-    #         tmpIt = tmpFile2.replace(oldFile, '...')
-
-    # oldFile
-    # 'C:/Users/gotru/OneDrive/testFolder/Saved/nope/test.txt'
-        # for f in f_names:
         for f in fOldPaths:
             # tmp1 = os.path.join(pullSourceURL(), branchName)
             tmp1 = os.path.join(pullSourceURL(), f)
@@ -852,6 +835,7 @@ for i, argMe in enumerate(sys.argv):
 
 
         # =============================
+        savedIndexes = []
         if(argMe == '-pullBranches'):
             pullSourceURL()
             pullDestURL()
@@ -864,6 +848,24 @@ for i, argMe in enumerate(sys.argv):
                 print "\nThese are your Saved Branchess"
                 print os.listdir(destPathURL)
                 print "----"
+            
+        if (argMe == '-select'):
+            savedIndexes = os.listdir(pullDestURL())
+            try:
+                sys.argv[2]
+            except:
+                print "out of bounds"
+            else:
+                print "====\nYou will be Reverting to:"
+                print savedIndexes[int(sys.argv[2])]
+                print "\n"
+            # import pdb; pdb.set_trace()   #debugger
+                input = raw_input("Continue? (yes/no)")
+                if(input == 'yes'):
+                    revert(savedIndexes[int(sys.argv[2])])      # the 2nd arg - made to an int - of the index - of pulledbranches
+                else:
+                    print "Cancelled Reverting"
+
 
         # =============================
         if(argMe == '-log'):
