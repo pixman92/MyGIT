@@ -311,15 +311,7 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
 
     # =============================
 
-    # import pdb; pdb.set_trace()   #debugger
-    # creating Directories - TODO - redo this later
-    for item in letsMakeDirs:
-        # import pdb; pdb.set_trace()   #debugger     #looking to exam: destWriteWhole
-        if os.path.exists(item) == False:
-            os.makedirs(item)
-            print 'Creating folder structure!'
-        else:
-            print item, " already exists"
+    
 
 
     # import pdb; pdb.set_trace()   #debugger
@@ -387,6 +379,23 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
 
     print "savedReadData", savedReadData        # variable - with the data to be written to 'branch destination'    
 
+    # =============================
+    # creating new FilePath(s) to be written to
+    writingFilePaths = []
+    for i in range(0, len(savedFilesForBranch)):
+        tmp = os.path.join(newSinglePathToWrite, savedFilesForBranch[i])
+
+        writingFilePaths.append(tmp)
+        print "writingFilePaths", writingFilePaths
+
+    for i in range(0, len(writingFilePaths)):
+        writingFilePaths[i] = removeLiterals(writingFilePaths[i])
+
+    # import pdb; pdb.set_trace()   #debugger
+
+
+
+    # =============================
 
     global destWriteWhole
     # stripping of pullSourceURL() string
@@ -406,8 +415,20 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
         destWriteWhole[i] = removeLiterals(destWriteWhole[i])
 
 
+    # import pdb; pdb.set_trace()   #debugger
+    # creating Directories - TODO - redo this later
+    for item in destWriteWhole:
+        # import pdb; pdb.set_trace()   #debugger     #looking to exam: destWriteWhole
+        if os.path.exists(item) == False:
+            os.makedirs(item)
+            print 'Creating folder structure!'
+        else:
+            print item, " already exists"
 
-    import pdb; pdb.set_trace()   #debugger
+
+
+
+
     
     # import pdb; pdb.set_trace()   #debugger
 
@@ -453,63 +474,47 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
 
     # pulledFiles & savedReadData = correlate by index
     # import pdb; pdb.set_trace()   #debugger
-    for i in range(0, len(destWriteWhole)):
+    for i in range(0, len(writingFilePaths)):
         # import pdb; pdb.set_trace()   #debugger
-            try:
-                with open(destWriteWhole[i], 'w') as letsWriteThis:
-                    print "letsWriteThis", letsWriteThis
-                    # print "savedReadData", destWriteWhole[i]
+        try:
+            with open(writingFilePaths[i], 'w') as letsWriteThis:
+                print "letsWriteThis", letsWriteThis
+                # print "savedReadData", writingFilePaths[i]
 
-                    if savedReadData[i] == "" or savedReadData[i] == []:
-                        print destWriteWhole[i] + "Is an Empty file!"
-                    else:
-                        letsWriteThis.write(str(savedReadData[i]))
-                        letsWriteThis.close()
+                if savedReadData[i] == "" or savedReadData[i] == []:
+                    print writingFilePaths[i] + "Is an Empty file!"
+                else:
+                    tmp = ' '.join(savedReadData[i])
+                    # letsWriteThis.write(str(savedReadData[i]))
+                    letsWriteThis.write(tmp)
+                    letsWriteThis.close()
 
+                # import pdb; pdb.set_trace()   #debugger
+                # try:
+                #     savedReadData
+                #     savedReadData[i] == []
+                # except:
+                #     print "was empty"
 
-                    # try:
-                    #     savedReadData
-                    #     savedReadData[i] == []
-                    # except:
-                    #     print "was empty"
+                # else:
+                #     letsWriteThis.write(str(savedReadData[i]))
+                #     letsWriteThis.close()
 
-                    # else:
-                    #     letsWriteThis.write(str(savedReadData[i]))
-                    #     letsWriteThis.close()
-
-                    # if savedReadData[i] is None:
-                    #     print destWriteWhole[i] + " is an EMPTYP FILE!"
-                    # else:
-                    #     letsWriteThis.write(savedReadData[i])
-                    #     letsWriteThis.close()
-            except IOError:
-                print "Error with file!"
-                # if savedReadData[i] == "" or savedReadData[i] == []:
-                #     raise Exception(destWriteWhole[i] + "Is an Empty file!")            
-            # else:
-            #     pass
-
-
-            # print "letsWriteThis", letsWriteThis
-            import pdb; pdb.set_trace()   #debugger
+                # if savedReadData[i] is None:
+                #     print destWriteWhole[i] + " is an EMPTYP FILE!"
+                # else:
+                #     letsWriteThis.write(savedReadData[i])
+                #     letsWriteThis.close()
+        except IOError:
+            print "Error with file!"
+            # if savedReadData[i] == "" or savedReadData[i] == []:
+            #     raise Exception(destWriteWhole[i] + "Is an Empty file!")            
+        # else:
+        #     pass
 
 
-    # =============================
-    # savedFiles[0] = removeFirstSlash(savedFiles[0])
-    # writeFiles = os.path.join(newFilePath_to_write, savedFiles[0])
-    # writeFiles = removeLiterals(writeFiles)
-    # import pdb; pdb.set_trace()   #debugger
-
-    
-
-    # with open(writeFiles, 'w') as fileMe:
-    #     print "file to write too", fileMe
-    #     fileMe.write()
-
-    # import pdb; pdb.set_trace()   #debugger
-
-
-            
+        # print "letsWriteThis", letsWriteThis
+        # import pdb; pdb.set_trace()   #debugger           
     
 
 # =============================
