@@ -129,12 +129,9 @@ def recursiveReturn(middle):      #TODO - add a param - for middle ground (1 lev
 # =============================
 
 def run():
-    runNew("C:/Users/gotru/OneDrive/testFolder/code/heya")  
-    # makeDirsAndFiles("C:/Users/gotru/OneDrive/testFolder/code/heya", '', '', 'C:/Users/gotru/OneDrive/testFolder/code/2')
-    makeDirsAndFiles("C:/Users/gotru/OneDrive/testFolder/code/4")
-
-    # dec('C:\Users\gotru\OneDrive\testFolder\code\3\asdf\aser\x04\x03\srs')
-    # stuff(freedFromLiterals)
+    # runNew("C:/Users/gotru/OneDrive/testFolder/code/heya")  
+    # makeDirsAndFiles("C:/Users/gotru/OneDrive/testFolder/code/4")
+    revert('4', 'C:/Users/gotru/OneDrive/testFolder/code/revertToHere')
 
 global BIGSave
 BIGSave = []
@@ -779,6 +776,8 @@ def saveAMilestone(message):
 
 
 def branchMe(name):
+    # OLD
+    # TODO - to be replaced with runNew(<PATH SOURCE>) & makeDirsAndFiles(<PATH TO SAVE>)
 
     if(os.path.exists(os.path.join(pullDestURL(), name)))==True:
         print "Branch folder exists"
@@ -901,18 +900,25 @@ def branchMe(name):
 
 
 
-def revert(branchName):
+def revert(branchName, destPathURL):
     # pullSourceURL()
     # pullDestURL()
 
+
+    # =============================
+    # pullDestURL() -> destPathURL
+    # =============================
     
     # if(os.path.exists(pullDestURL()+branchName))==True:
     #     print 'Branch to Revert from, exists!'
     
     allBranches = []
-    allBranches = os.listdir(pullDestURL())
+    # allBranches = os.listdir(pullDestURL())
+    allBranches = os.listdir(destPathURL)
     amIThere = False
     for me in allBranches:
+        # logic to sort through options of branch names to see if one matches
+        # dead man's switch
         if(me != branchName):
             print 'No Mach per this Name'
         else:
@@ -924,9 +930,11 @@ def revert(branchName):
     if(amIThere == True):
         # branchName = str(branchName)
 
-        fromPath = pullDestURL() + '/'+ branchName
-        toPath = pullSourceURL()
+        # fromPath = pullDestURL() + '/'+ branchName
+        # toPath = pullSourceURL()
 
+        fromPath = 'C:/Users/gotru/OneDrive/testFolder/code/4'
+        toPath = 'C:/Users/gotru/OneDrive/testFolder/code/revertToHere'
 
         # tmp = fromPath
         # path = os.path.join(pullDestURL(), branchName)
@@ -943,6 +951,8 @@ def revert(branchName):
 
             print fromPath
             print d_names, f_names
+
+            import pdb; pdb.set_trace()   #debugger
 
             # files from Saved Branch - to be read from
             for f in f_names:
@@ -982,7 +992,7 @@ def revert(branchName):
                 # for item in dir_name:
                 for i in range(0, len(d_names)):
                     # logic for making Saved_folder tree structure
-                    dirsFromSaved.append(os.path.join(pullSourceURL(), d_names[i]))
+                    dirsFromSaved.append(os.path.join(destPathURL, d_names[i]))
 
                 for i in range(0, len(dirsFromSaved)):
                     tmp = dirsFromSaved[i]
@@ -1030,8 +1040,8 @@ def revert(branchName):
                 # OLD??
                 # newFilePath.append(fileMe.replace(sourcePathMe, savedStrToReplace))       
         for f in fOldPaths:
-            # tmp1 = os.path.join(pullSourceURL(), branchName)
-            tmp1 = os.path.join(pullSourceURL(), f)
+            # tmp1 = os.path.join(destPathURL, branchName)
+            tmp1 = os.path.join(destPathURL, f)
             # tmp2 = os.path.join(tmp1, f)
 
             tmp2 = tmp1
@@ -1046,8 +1056,9 @@ def revert(branchName):
         # for f in sourcePathMe:
         #     os.remove(f)
 
+        # ===========
         # delete all in SourceFolder URL
-        shutil.rmtree(pullSourceURL()+'/')
+        # shutil.rmtree(destPathURL+'/')
 
         # =============================
 
@@ -1069,10 +1080,10 @@ def revert(branchName):
 
 
         # =============================
-        # os.makedirs(pullSourceURL())
-        if os.path.exists(pullSourceURL()) == False:
+        # os.makedirs(destPathURL)
+        if os.path.exists(destPathURL) == False:
             print 'ran'
-            os.makedirs(pullSourceURL())
+            os.makedirs(destPathURL)
 
 
 
@@ -1081,15 +1092,22 @@ def revert(branchName):
         ii = 0
         for item in newFilePath_to_write:
             print 'item new? ', item
-            with open(item, 'w') as savedDest:
-                print "savedDest", savedDest
-                # print '\n====\n', newFileData[ii]
-                savedDest.write((' '.join(newFileData[ii])))
-                print "written:\n", ' '.join(newFileData[ii])
-                savedDest.close()
+            try:
+                with open(item, 'w') as savedDest:                
+                    print "savedDest", savedDest
+                    # print '\n====\n', newFileData[ii]
+                    savedDest.write((' '.join(newFileData[ii])))
+                    # print "written:\n", ' '.join(newFileData[ii])
+                    savedDest.close()
 
-            if(ii < len(newFilePath_to_write)):
-                ii += 1
+                if(ii < len(newFilePath_to_write)):
+                    ii += 1
+            except IOError:
+                print "Error with, " + item + ". Failed to write."
+            else:
+                print "written:\n", ' '.join(newFileData[ii])
+
+
 # ====================================================
 print sys.argv
 
