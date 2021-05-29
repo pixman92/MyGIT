@@ -236,8 +236,6 @@ def runNew(pathMeNew):      #pathMeNew = branch base (beginning - not yet recurs
 
     # import pdb; pdb.set_trace()   #debugger
 
-    # 
-
 
     # TODO - take files and directories, make them just file names
         # newText = pulledFiles[0].replace(pullSourceURL(), "")
@@ -280,14 +278,51 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
     # import pdb; pdb.set_trace()   #debugger                
 
 
+    # =============================
+    # making Directories -> branch Path
+    global dirFraction
+    # stripping of pullSourceURL() string
+    dirFraction  = []
+    newPathsToWrite = []
+    for i in range(0, len(pulledDirs)):
+        print "pulledDirs2", pulledDirs
+        dirFraction.append(pulledDirs[i].replace(newSinglePathToWrite, ""))#saves file structure beyhond the sourcePath
+        print "dirFraction", dirFraction
+        
+
+
+
+
+
+    # SUPER CRITICAL for Windows machines
+    # for i in range(0, len(dirFraction)):
+    #     dirFraction[i] = removeFirstSlash(dirFraction[i])
+    # =============================
+    # Getting Stupid Paths - working
+    letsMakeDirs = []
+    for item in dirFraction:
+        # stripping out the PrePath level - from path too ../
+        letsMakeDirs.append(os.path.join(newSinglePathToWrite, item))   # this newSinglePathToWrite -> makes the code push to a unified folder
+
+    for i in range(0, len(letsMakeDirs)):
+        letsMakeDirs[i] = removeLiterals(letsMakeDirs[i])
+
+    # import pdb; pdb.set_trace()   #debugger
+
+    # =============================
+
+    # import pdb; pdb.set_trace()   #debugger
     # creating Directories - TODO - redo this later
-    for item in pulledDirs:
-        import pdb; pdb.set_trace()   #debugger     #looking to exam: destWriteWhole
-        if os.path.isdir(item) == False:
+    for item in letsMakeDirs:
+        # import pdb; pdb.set_trace()   #debugger     #looking to exam: destWriteWhole
+        if os.path.exists(item) == False:
             os.makedirs(item)
             print 'Creating folder structure!'
         else:
             print item, " already exists"
+
+
+    # import pdb; pdb.set_trace()   #debugger
 
     # ============OLD???=================
     # itemSaved = ""
@@ -353,60 +388,110 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
     print "savedReadData", savedReadData        # variable - with the data to be written to 'branch destination'    
 
 
-    global storedFraction
+    global destWriteWhole
     # stripping of pullSourceURL() string
-    storedFraction  = []
+    destWriteWhole  = []
     newPathsToWrite = []
     for i in range(0, len(pulledFiles)):
         print "pulledFiles2", pulledFiles
-        storedFraction.append(pulledFiles[i].replace(pullSourceURL(), ""))#saves file structure beyhond the sourcePath
-        print "storedFraction", storedFraction
-    
-    # just removing '/' -> it would otherwise corrupt creating the FilePath
-    for i in range(0, len(storedFraction)):
-        storedFraction[i] = removeFirstSlash(storedFraction[i])
-    print "storedFraction", storedFraction
+        
+        tmp = os.path.join(newSinglePathToWrite, savedDirsForBranch[i])
 
+        destWriteWhole.append(tmp)
+
+        # destWriteWhole.append(pulledFiles[i].replace(newSinglePathToWrite, savedFilesForBranch[i]))    #saves file structure beyhond the sourcePath - changed pullSourceURL() -> newSinglePathToWrite
+        print "destWriteWhole", destWriteWhole
+
+    for i in range(0, len(destWriteWhole)):
+        destWriteWhole[i] = removeLiterals(destWriteWhole[i])
+
+
+
+    import pdb; pdb.set_trace()   #debugger
+    
+    # import pdb; pdb.set_trace()   #debugger
+
+    # =============================
+    # to be changed based on machine of OS
+    # just removing '/' -> it would otherwise corrupt creating the FilePath
+    # for i in range(0, len(destWriteWhole)):
+    #     destWriteWhole[i] = removeFirstSlash(destWriteWhole[i])
+    # print "destWriteWhole", destWriteWhole
+    # =============================
 
 
     # import pdb; pdb.set_trace()   #debugger 
-    # is storedFraction different than savedFilesForBranch??? - they are comparable - but differ based on founding file structure given
+    # is destWriteWhole different than savedFilesForBranch??? - they are comparable - but differ based on founding file structure given
     # will sort out later
 
     # =============================
     # this for loop -> creates or doesn't create the directories
     # for item in storedNewPath:
-    destWriteWhole = []
-    for item in storedFraction:       # for all the baseline Paths
-        # item = removeFirstSlash(item)   #allows for a smoother URL formation - by removing / from index of 0  # unnecessary?? 
-        destWriteWhole.append(os.path.join(newSinglePathToWrite, item))
-        # import pdb; pdb.set_trace()   #debugger
-    print "destWriteWhole", destWriteWhole
-    # import pdb; pdb.set_trace()   #debugger
+    # destWriteWhole = []
+    # for item in destWriteWhole:       # for all the baseline Paths - files
+    #     # item = removeFirstSlash(item)   #allows for a smoother URL formation - by removing / from index of 0  # unnecessary?? 
+    #     destWriteWhole.append(os.path.join(newSinglePathToWrite, item))
 
-    for i in range(0, len(destWriteWhole)):
-        destWriteWhole[i] = removeLiterals(destWriteWhole[i])
+    # print "destWriteWhole", destWriteWhole
+    # # import pdb; pdb.set_trace()   #debugger
 
-    for item in destWriteWhole:
-        import pdb; pdb.set_trace()   #debugger     #looking to exam: destWriteWhole
-        if os.path.isdir(item) == False:
-            os.makedirs(item)
-            print 'Creating folder structure!'
-        else:
-            print item, " already exists"
+    # for i in range(0, len(destWriteWhole)):
+    #     destWriteWhole[i] = removeLiterals(destWriteWhole[i])
+
+    # =============================
+    # this code is confused - it makes file paths into directories - thus failing
+    # for item in destWriteWhole:
+    #     # import pdb; pdb.set_trace()   #debugger     #looking to exam: destWriteWhole
+    #     if os.path.isdir(item) == False:
+    #         os.makedirs(item)
+    #         print 'Creating folder structure!'
+    #     else:
+    #         print item, " already exists"
         
     
 
 
     # pulledFiles & savedReadData = correlate by index
     # import pdb; pdb.set_trace()   #debugger
-    for i in range(0, 2):
+    for i in range(0, len(destWriteWhole)):
+        # import pdb; pdb.set_trace()   #debugger
+            try:
+                with open(destWriteWhole[i], 'w') as letsWriteThis:
+                    print "letsWriteThis", letsWriteThis
+                    # print "savedReadData", destWriteWhole[i]
 
-        with open(destWriteWhole[i], 'w') as letsWriteThis:
-            print "letsWriteThis", letsWriteThis
-            print "savedReadData", destWriteWhole[i]
-            letsWriteThis.write(savedReadData[i])
-            print "letsWriteThis", letsWriteThis
+                    if savedReadData[i] == "" or savedReadData[i] == []:
+                        print destWriteWhole[i] + "Is an Empty file!"
+                    else:
+                        letsWriteThis.write(str(savedReadData[i]))
+                        letsWriteThis.close()
+
+
+                    # try:
+                    #     savedReadData
+                    #     savedReadData[i] == []
+                    # except:
+                    #     print "was empty"
+
+                    # else:
+                    #     letsWriteThis.write(str(savedReadData[i]))
+                    #     letsWriteThis.close()
+
+                    # if savedReadData[i] is None:
+                    #     print destWriteWhole[i] + " is an EMPTYP FILE!"
+                    # else:
+                    #     letsWriteThis.write(savedReadData[i])
+                    #     letsWriteThis.close()
+            except IOError:
+                print "Error with file!"
+                # if savedReadData[i] == "" or savedReadData[i] == []:
+                #     raise Exception(destWriteWhole[i] + "Is an Empty file!")            
+            # else:
+            #     pass
+
+
+            # print "letsWriteThis", letsWriteThis
+            import pdb; pdb.set_trace()   #debugger
 
 
     # =============================
@@ -421,11 +506,11 @@ def makeDirsAndFiles(newSinglePathToWrite): #savedPath,savedDirs, savedFiles, ne
     #     print "file to write too", fileMe
     #     fileMe.write()
 
+    # import pdb; pdb.set_trace()   #debugger
 
 
             
     
-
 
 # =============================
 def quickInit(initDir, sourceDir, saveDir):
